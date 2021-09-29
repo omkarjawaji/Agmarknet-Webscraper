@@ -49,30 +49,29 @@ else:
 url = "https://agmarknet.gov.in/SearchCmmMkt.aspx?Tx_Commodity="+Tx_Commodity+"&Tx_State="+Tx_State+"&Tx_District="+Tx_District+"&Tx_Market="+Tx_Market+"&DateFrom="+DateFrom+"&DateTo="+DateTo+"&Fr_Date="+Fr_Date+"&To_Date="+To_Date+"&Tx_Trend="+Tx_Trend+"&Tx_CommodityHead="+Tx_CommodityHead+"&Tx_StateHead="+Tx_StateHead+"&Tx_DistrictHead="+Tx_DistrictHead+"&Tx_MarketHead="+Tx_MarketHead
 
 
-main_url = ""
 driver = webdriver.Chrome(ChromeDriverManager().install())
-driver.get(main_url)
-soup = BeautifulSoup(driver.page_source, 'html.parser')
+driver.get(url)
 
 final_data = pd.DataFrame()
 
 while True:
     try:
-        pageSource = driver.page_source
-        soup2 = BeautifulSoup(pageSource, 'html.parser')
-        table = soup2.find('table', attrs={'class': 'tableagmark_new'})
-        aspcalls = table.findAll('input')
-        
-        tab = driver.find_element_by_id('cphBody_GridPriceData').get_attribute('outerHTML')
-        data = pd.read_html(str(tab))[0]
+        table = driver.find_element_by_id('cphBody_GridPriceData').get_attribute('outerHTML')
+        data = pd.read_html(str(table))[0]
         data.set_index('Sl no.', inplace=True)
         data.dropna(axis=0, inplace=True)
         final_data = pd.concat([final_data, data], axis=0)
+
+        page_source = driver.page_source
+        soup = BeautifulSoup(page_source, 'html.parser')
+        find_buttons = soup.find('table', attrs={'class': 'tableagmark_new'})
+        aspcalls = find_buttons.findAll('input')
         for i in range(len(aspcalls)):
             if (re.sub("[\"\']", "", str(aspcalls[i])).find("Page$Next")):
                 next_btn_pos = i
             else:
                 break
+
         element = driver.find_element_by_xpath("//*[@id='cphBody_GridPriceData']/tbody/tr[52]/td/table/tbody/tr/td["+str(next_btn_pos)+"]/input")
         driver.execute_script("arguments[0].click();", element)
         time.sleep(15)
@@ -99,4 +98,6 @@ mydbtable = mysql.connector.connect(host = "localhost", user = "tester", passwd 
 
 sqlEngine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}".format(host=hostname, db=dbname, user=uname, pw=pwd))
 
-final_data.to_sql('task_1', sqlEngine, index=True)
+final_data.to_sql('Task_1', sqlEngine, index=True)
+
+mycursor.close()
