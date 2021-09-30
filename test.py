@@ -147,6 +147,9 @@ Wheat"""
 
 list = string.replace("\n",",").split(",")
 
+comd_list = [x for x in comd_list if x not in list]
+comd_list = [i.replace(" ","+") for i in comd_list]
+
 comm_page = urllib3.urlopen(url)
 comm_soup = BeautifulSoup(comm_page, 'html.parser')
 
@@ -163,8 +166,8 @@ for option in comm_soup.find('select', attrs={'id': 'ddlCommodity'}).find_all('o
         break
         print("Issue while fetching commodity")
 
-comd_list = [x for x in comd_list if x not in list]
-comd_list = [i.replace(" ","+") for i in comd_list]
+# comd_list = [x for x in comd_list if x not in list]
+# comd_list = [i.replace(" ","+") for i in comd_list]
         
 comd_dict = {key:val for key, val in comd_dict.items() if val not in list}
 comd_dict = {key:val.replace(" ","+") for key, val in comd_dict.items() if val in comd_list}
