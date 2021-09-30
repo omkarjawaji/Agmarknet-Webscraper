@@ -1,6 +1,6 @@
 # Agmarknet WebScraper
 
-A project to scrape the data from a govt website for price of various Commodities sold in the Indian state of  Maharastra's various Districts and their corresponding Markets between 01-Jan-2021 and 10-Aug_2021
+A project to scrape the data from a govt website for price of various Commodities sold in the Indian state of  Maharastra's various Districts and their corresponding Markets between 01-Jan-2021 and 10-Aug-2021
 
 ## Installation
 
