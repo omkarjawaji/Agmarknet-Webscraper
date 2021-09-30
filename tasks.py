@@ -71,6 +71,7 @@ while True:
                 next_btn_pos = i
             else:
                 break
+                print("couldn't find next button")
 
         element = driver.find_element_by_xpath("//*[@id='cphBody_GridPriceData']/tbody/tr[52]/td/table/tbody/tr/td["+str(next_btn_pos)+"]/input")
         driver.execute_script("arguments[0].click();", element)
@@ -78,7 +79,7 @@ while True:
     except:
         print(final_data.shape)
         print(final_data)
-        print('break')
+        print('break, last table')
         driver.close()
         driver.quit()
         break
