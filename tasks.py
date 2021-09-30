@@ -1,16 +1,30 @@
-import pandas as pd
+import mysql.connector
+from sqlalchemy import create_engine
+
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
+
+import pandas as pd
+
 from bs4 import BeautifulSoup
 from lxml import html
 import urllib.request as urllib3
 import time
 import re
-import mysql.connector
-from sqlalchemy import create_engine
+
+"""
+---Taking input from the user for the task to perform---
+Task 1 : Fetch prices data for the commodity Tomato sold in all markets of the Pune district, Maharashtra.
+Task 2 : Fetch prices data for the commodity Tomato sold in all markets of all districts of Maharashtra.
+Task 3 : Fetch prices data for all commodities sold in all markets of all districts of Maharashtra.
+"""
 
 task_no = int(input("Which task to perform ?: "))
+
+"""
+---URL Manipulation based on the input---
+"""
 
 Tx_State="MH"
 DateFrom="01-Jan-2021"
@@ -48,11 +62,21 @@ else:
 
 url = "https://agmarknet.gov.in/SearchCmmMkt.aspx?Tx_Commodity="+Tx_Commodity+"&Tx_State="+Tx_State+"&Tx_District="+Tx_District+"&Tx_Market="+Tx_Market+"&DateFrom="+DateFrom+"&DateTo="+DateTo+"&Fr_Date="+Fr_Date+"&To_Date="+To_Date+"&Tx_Trend="+Tx_Trend+"&Tx_CommodityHead="+Tx_CommodityHead+"&Tx_StateHead="+Tx_StateHead+"&Tx_DistrictHead="+Tx_DistrictHead+"&Tx_MarketHead="+Tx_MarketHead
 
-
+"""
+---Initializing an instance for Selenium Web Driver for Chrome---
+"""
 driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get(url)
 
+"""
+---Creating a master DataFrame which will eventually have all the data as, with every loop the data gets appended---
+"""
+
 final_data = pd.DataFrame()
+
+"""
+---A loop to replicate the action of pressing next button if a table extends to next page---
+"""
 
 while True:
     try:
@@ -79,29 +103,61 @@ while True:
     except:
         print(final_data.shape)
         print(final_data)
-        print('break, last table')
+        print('Stopping due to end of data')
         driver.close()
         driver.quit()
         break
 
-
+"""
+---MySQL Database connection---
+"""
 hostname = "localhost"
 dbname = "ASSIGNMENT"
 uname = "tester"
 pwd = "1234"
 table_name = "task_"+str(task_no)
 
-# mycursor.execute("CREATE DATABASE ASSIGNMENT")
-
+"""
+---Creation of Database and table with task number as an appendix---
+"""
 mydbtable = mysql.connector.connect(host = hostname, user = uname, passwd = pwd, database= dbname)
 mycursor = mydbtable.cursor()
+
+# mycursor.execute("CREATE DATABASE ASSIGNMENT")
+
+# create_db = '''
+# use assignment;
+
+# CREATE TABLE """+table_name+""" (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     sl_no int, 
+#     District_Name VARCHAR(255), 
+#     Market_Name VARCHAR(255), 
+#     commodity VARCHAR(255), 
+#     variety VARCHAR(255), 
+#     grade VARCHAR(255),
+#     Min_Price_per_Quintal int, 
+#     Max_Price_per_Quintal int, 
+#     Modal_Price_per_Quintal int, 
+#     Price_Date VARCHAR(255)
+# );
+# '''
+# mycursor.execute (create_db)
+
+"""
+---Using SQLAlchemy as an Object Relational Mapper to map Pandas data into SQL Database table---
+"""
 
 sqlEngine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}".format(host=hostname, db=dbname, user=uname, pw=pwd))
 
 final_data.to_sql(table_name, sqlEngine, index=True)
 
-alter_names = """
-ALTER TABLE task_"""+str(task_no)+"""
+"""
+---Modifying the column names to avoid issues with spaces in table column names---
+"""
+
+alter_column_names = """
+ALTER TABLE """+table_name+"""
 RENAME COLUMN `Sl no.` TO sl_no,
 RENAME COLUMN `District Name` TO District_Name,
 RENAME COLUMN `Market Name` TO Market_Name,
@@ -111,6 +167,6 @@ RENAME COLUMN `Modal Price (Rs./Quintal)` TO Modal_Price_per_Quintal,
 RENAME COLUMN `Price Date` TO Price_Date;
 """
 
-mycursor.execute(alter_names)
+mycursor.execute(alter_column_names)
 
 mycursor.close()
