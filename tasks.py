@@ -88,16 +88,28 @@ hostname = "localhost"
 dbname = "ASSIGNMENT"
 uname = "tester"
 pwd = "1234"
+table_name = "task_"+str(task_no)
 
-mydb = mysql.connector.connect(host = hostname, user = uname, passwd = pwd)
-mycursor = mydb.cursor()
-mycursor.execute("CREATE DATABASE ASSGINMENT")
+# mycursor.execute("CREATE DATABASE ASSIGNMENT")
 
-mydbtable = mysql.connector.connect(host = "localhost", user = "tester", passwd = "1234", database= "ASSGINMENT")
-
+mydbtable = mysql.connector.connect(host = hostname, user = uname, passwd = pwd, database= dbname)
+mycursor = mydbtable.cursor()
 
 sqlEngine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}".format(host=hostname, db=dbname, user=uname, pw=pwd))
 
-final_data.to_sql('Task_1', sqlEngine, index=True)
+final_data.to_sql(table_name, sqlEngine, index=True)
+
+alter_names = """
+ALTER TABLE task_"""+str(task_no)+"""
+RENAME COLUMN `Sl no.` TO sl_no,
+RENAME COLUMN `District Name` TO District_Name,
+RENAME COLUMN `Market Name` TO Market_Name,
+RENAME COLUMN `Min Price (Rs./Quintal)` TO Min_Price_per_Quintal,
+RENAME COLUMN `Max Price (Rs./Quintal)` TO Max_Price_per_Quintal,
+RENAME COLUMN `Modal Price (Rs./Quintal)` TO Modal_Price_per_Quintal,
+RENAME COLUMN `Price Date` TO Price_Date;
+"""
+
+mycursor.execute(alter_names)
 
 mycursor.close()
