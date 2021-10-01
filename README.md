@@ -59,13 +59,13 @@ SQLAlchemy, an object Relational Mapper is used to map all the data in the DataF
 ## File Structure
 ```
 Agmarknet-Webscraper
-├── WebScraper Scripts
+├── webscraping_scripts
 │   ├── tasks.py
 │   ├── Commodities.py
 │   ├── Districts.py
 │   ├── Markets.py
 │   └── Alternate_Scraper.py
-├── Databases
+├── databases
 │   ├── assignment1.sql
 │   ├── task1.sql
 │   ├── task2.sql
@@ -74,10 +74,10 @@ Agmarknet-Webscraper
 │   ├── commodities.sql
 │   ├── districts.sql
 │   └── markets.sql
-├── Test files
+├── tests
 │   └── test.py
 ├── Images
-│   └── DB_Schema.jpg
+│   └── db_schema.jpg
 ├── README.md
 ├── requirements.txt
 ├── LICENSE
@@ -92,7 +92,7 @@ MySQL was used to store the fetched data.
 SQLAlchemy was utilized to map the data in the form of DataFrames to the MySQL database tables.
 
 ## Database Schema:
-<img src="Images/DB_Schema.jpg" alt="Database Schema" style="width:500px;"/>
+<img src="images/db_schema.jpg" alt="Database Schema" style="width:500px;"/>
 
 
 ## License
