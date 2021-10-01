@@ -55,14 +55,22 @@ python tasks.py
 Agmarknet-Webscraper
 ├── WebScraper Scripts
 │   ├── tasks.py
+│   ├── Commodities.py
+│   ├── Districts.py
+│   ├── Markets.py
 │   └── Alternate_Scraper.py
-├── Test files
-│   └── test.py
 ├── Databases
 │   ├── assignment1.sql
 │   ├── task1.sql
 │   ├── task2.sql
-│   └── task3.sql
+│   ├── task3.sql
+│   ├── options.sql
+│   ├── commodities.sql
+│   ├── districts.sql
+│   └── markets.sql
+├── Test files
+│   └── test.py
+├── DB Schema.jpg
 ├── README.md
 ├── requirements.txt
 ├── LICENSE
@@ -76,7 +84,8 @@ MySQL was used to store the fetched data.
 
 SQLAlchemy was utilized to map the data in the form of DataFrames to the MySQL database tables.
 
-
+## Database Schema:
+![Database Schema](DB Schema.jpg)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
