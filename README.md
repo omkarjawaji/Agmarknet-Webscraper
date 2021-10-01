@@ -49,6 +49,12 @@ Task 3 : Fetch prices data for all commodities sold in all markets of all distri
 python tasks.py
  
 ```
+## A Short Note:
+
+The WebScraper script fetches the URL and parses through the HTML source file which is parsed using a html parser.
+As the parser locates the table , it is fed into a Pandas DataFrame subsequently, the cursor now searches for the 'next button' to get to the next page, to fetch the remaining part of the resultant table, until it reaches the end of the result. All the fetched data will be appended to a master DataFrame during the looping.
+SQLAlchemy, an object Relational Mapper is used to map all the data in the DataFrame to a Database table in the MySQL server.  
+
 
 ## File Structure
 ```
@@ -70,7 +76,8 @@ Agmarknet-Webscraper
 │   └── markets.sql
 ├── Test files
 │   └── test.py
-├── DB Schema.jpg
+├── Images
+│   └── DB_Schema.jpg
 ├── README.md
 ├── requirements.txt
 ├── LICENSE
@@ -85,7 +92,8 @@ MySQL was used to store the fetched data.
 SQLAlchemy was utilized to map the data in the form of DataFrames to the MySQL database tables.
 
 ## Database Schema:
-![Database Schema](DB Schema.jpg)
+<img src="Images/DB_Schema.jpg" alt="Database Schema" style="width:500px;"/>
+
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
