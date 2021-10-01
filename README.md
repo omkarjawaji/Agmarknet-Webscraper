@@ -70,7 +70,8 @@ Agmarknet-Webscraper
 │   └── markets.sql
 ├── Test files
 │   └── test.py
-├── DB Schema.jpg
+├── Images
+│   └── DB_Schema.jpg
 ├── README.md
 ├── requirements.txt
 ├── LICENSE
