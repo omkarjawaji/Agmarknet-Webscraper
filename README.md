@@ -85,7 +85,8 @@ MySQL was used to store the fetched data.
 SQLAlchemy was utilized to map the data in the form of DataFrames to the MySQL database tables.
 
 ## Database Schema:
-![Database Schema](Images/DB_Schema.jpg =250px)
+<img src="Images/DB_Schema.jpg" alt="Database Schema" style="width:200px;"/>
+
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
