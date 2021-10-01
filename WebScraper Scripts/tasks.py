@@ -125,7 +125,7 @@ mycursor = mydbtable.cursor()
 
 # mycursor.execute("CREATE DATABASE ASSIGNMENT")
 
-# create_db = '''
+# create_tab = '''
 # use assignment;
 
 # CREATE TABLE """+table_name+""" (
@@ -142,7 +142,7 @@ mycursor = mydbtable.cursor()
 #     Price_Date VARCHAR(255)
 # );
 # '''
-# mycursor.execute (create_db)
+# mycursor.execute (create_tab)
 
 """
 ---Using SQLAlchemy as an Object Relational Mapper to map Pandas data into SQL Database table---
